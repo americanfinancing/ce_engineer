@@ -1,0 +1,89 @@
+version: '3.0'
+
+x-rails-app: &rails_app
+  build:
+    context: frontend/.
+    dockerfile: ../.dockerdev/rails/Dockerfile
+    args:
+      RUBY_VERSION: '2.7.2'
+      NODE_MAJOR: '12'
+      YARN_VERSION: '1.22.5'
+      BUNDLER_VERSION: '2.1.2'
+  environment: &rails_env
+    NODE_ENV: development
+    RAILS_ENV: ${RAILS_ENV:-development}
+  image: rails_app:1.0.0
+  tmpfs:
+    - /tmp
+
+x-rails-backend: &rails_backend
+  <<: *rails_app
+  stdin_open: true
+  tty: true
+  volumes:
+    - ./frontend:/opt/app:cached
+    - bundle:/usr/local/bundle
+    - node_modules:/opt/app/node_modules
+    - packs:/opt/app/public/packs
+    - packs-test:/opt/app/public/packs-test
+    - rails_cache:/opt/app/tmp/cache
+  environment:
+    <<: *rails_env
+    BOOTSNAP_CACHE_DIR: /usr/local/bundle/_bootsnap
+    WEBPACKER_DEV_SERVER_HOST: webpacker
+    WEB_CONCURRENCY: 1
+    HISTFILE: /opt/app/log/.bash_history
+    EDITOR: vi
+    LOG: ${LOG:-0}
+
+services:
+  rails:
+    <<: *rails_backend
+    command: bundle exec rails server -b 0.0.0.0
+    ports:
+      - '3000:3000'
+
+  webpacker:
+    <<: *rails_app
+    command: bundle exec ./bin/webpack-dev-server
+    ports:
+      - '3035:3035'
+      - 3036
+    volumes:
+      - ./frontend:/opt/app:cached
+      - bundle:/usr/local/bundle
+      - node_modules:/opt/app/node_modules
+      - packs:/opt/app/public/packs
+      - packs-test:/opt/app/public/packs-test
+    environment:
+      <<: *rails_env
+      WEBPACKER_DEV_SERVER_HOST: 0.0.0.0
+
+  runner:
+    <<: *rails_backend
+    command: /bin/bash
+
+  api:
+    build:
+      context: api/.
+      dockerfile: ../.dockerdev/sinatra/Dockerfile
+      args:
+        RUBY_VERSION: '2.7.2'
+        BUNDLER_VERSION: '2.1.2'
+    command: bundle exec rackup --host 0.0.0.0 -p 4567
+    ports:
+      - '4567:4567'
+    image: api:1.0.0
+    tmpfs:
+      - /tmp
+    volumes:
+      - ./api:/opt/app:cached
+      - api_bundle:/usr/local/bundle
+
+volumes:
+  api_bundle:
+  bundle:
+  node_modules:
+  packs-test:
+  packs:
+  rails_cache:
