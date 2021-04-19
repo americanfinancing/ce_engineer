@@ -7,8 +7,8 @@ Hello there potential teammate!  With this short quiz we hope to get a sense of 
 1. Read through the mock ticket below.
 2. [Download][zip] or clone the [official repository][repo].
 3. Complete the mock ticket.
-4. Zip up your changes.
-5. Send an email with your zip attached to hr@americanfinancing.net letting them know you've completed the quiz.
+4. Zip up your changes using the `./zip_solution.sh` script in the project root
+5. Send an email with your zip attached to ce@americanfinancing.net letting us know you've completed the quiz.
 
 **Please note**  In order to keep your local machine clutter free this quiz application has been Dockerized and will require [Docker Desktop][docker-desktop] (or similar) to be installed.
 

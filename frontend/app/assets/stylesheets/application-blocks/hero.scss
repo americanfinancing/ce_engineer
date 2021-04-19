@@ -1,13 +1,10 @@
 .hero {
-  background: linear-gradient(to bottom right, rgba($blue, .3), rgba($red, .3)),
-              url('union-station.jpg') top -20em center/cover fixed;
+  background: linear-gradient(to bottom right, rgba($blue, .3), rgba($red, .3)), url('union-station.jpg') top center/auto 100%;
   height: 25em;
   position: relative;
 
   @include screen-below($desktop) {
-    background: linear-gradient(to bottom right, rgba($blue, .3), rgba($red, .3)),
-                url('union-station.jpg') top -10em center/cover fixed;
-    height: 15em;
+    height: 10em;
   }
 }
 
