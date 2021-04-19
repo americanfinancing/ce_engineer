@@ -1,7 +1,7 @@
 #!/bin/sh
 
 docker-compose down \
-  && rm frontend/db/*.sqlite3 \
+  && rm -f frontend/db/*.sqlite3 \
   && docker-compose build \
   && docker-compose run --rm api bundle install \
   && docker-compose run --rm rails bundle install \

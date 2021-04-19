@@ -52,12 +52,12 @@ As far as users are concerned, this website has the following features:
 3. On the first page, the "Prev" link is disabled, naturally.
 4. Clicking "Next" advances the user one page forward, pulling the next 24 restaurants from the database.
 5. Unfortunately, this website has a bug.  The "Next" button isn't disabled when you reach the end of the restaurant list, and it should be.
-6. This website is sorely lacking a feature as well.  It assumes that no new restaurants will ever open, or that existing restaurants may one day close their doors for good.  The original developer was kind enough  to write an OpenTablePuller class to retrieves the restaurant data from the Open Table API, but was shortsighted and wrote no rake task that could be used to refresh the local data.  We'd like to be able to run this rake task as `rails restaurant:pull` to refresh the SQLite database that's powering the front-end paginated list of restaurants.
+6. This website is sorely lacking a feature as well.  It assumes that no new restaurants will ever open, or that existing restaurants may one day close their doors for good.  The original developer was kind enough to write an OpenTablePuller class to retrieve the restaurant data from the Open Table API, but was shortsighted and wrote no rake task that could be used to refresh the local data.  We'd like to be able to run this rake task as `rails restaurant:pull` to refresh the SQLite database that's powering the front-end paginated list of restaurants.
 
 ### Acceptance Criteria:
 
 1. When the end of the restaurant list is reached, the "Next" link is disabled.
-2. To refresh the locally stored data, you have created a rake task that leverages the OpenTablePuller class, and this can be executing with the following: `rails restaurant:pull`.
+2. To refresh the locally stored data, you have created a rake task that leverages the OpenTablePuller class, and this can be executed with the following: `rails restaurant:pull` (`docker-compose run --rm runner bundle exec rails restaurant:pull`)
 3. Implementing the two items above does not break any existing functionality.
 
 ### Additional Notes:
